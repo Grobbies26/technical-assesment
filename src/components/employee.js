@@ -16,13 +16,40 @@ function Employee(props){
     )
 }
 
+function defaultSortEmployees(list){
+    let managers = []
+    let employees = []
+    let trainees = []
+    list.forEach(employee => {
+        if(employee.Role === "Manager"){
+            managers.push(employee)
+        }
+        else if(employee.Role === "Employee"){
+            employees.push(employee)
+        }
+        else{
+            trainees.push(employee)
+        }
+    });
+
+    return managers.concat(employees, trainees)
+}
+
 function Employees(props) {
-    const employees = employeeList
+    const employees = defaultSortEmployees(employeeList)
     const searchTerm = props.searchTerm
     const filterTerm = props.filterTerm
     const list = employees.filter((employee) => {
         if(searchTerm === ''){
             return employee
+        }
+
+        if(filterTerm === "BirthDate"){
+            const date = employee.BirthDate.split('-').reverse().join('-')
+            
+            if(date > searchTerm){
+                return employee
+            }
         }
 
         if(filterTerm === "FullName"){
