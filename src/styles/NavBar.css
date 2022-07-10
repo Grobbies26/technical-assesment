@@ -1,0 +1,19 @@
+.menuItems{
+    float: left;
+    display: flex;
+    flex-direction: row;
+    width: 110px;
+    height: 20px;
+    padding: 3px;
+    font-size: 20px;
+}
+
+.menuItems a {
+    color: white;
+    text-decoration: none;
+}
+
+.NavBar{
+    justify-content: right;
+    align-items: right;
+}
