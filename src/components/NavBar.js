@@ -1,14 +1,9 @@
 import '../styles/NavBar.css'
-
-const menuItems = [
-    { title:'Home', },
-    { title:'Hierarchy', },
-    { title:'Summary', },
-]
+import {menuItems} from '../dataArrays/userArrays'
 
 function Item(props){
     const item = props.item
-    
+
     return(
         <li className='menuItems'>
             <a href='/#'>{item.title}</a>

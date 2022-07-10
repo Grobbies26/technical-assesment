@@ -1,4 +1,5 @@
 import '../styles/Employee.css';
+import {employeeList} from '../dataArrays/userArrays'
 
 function Employee(props){
     const employee = props.employee
@@ -16,7 +17,7 @@ function Employee(props){
 }
 
 function Employees(props) {
-    const employees = props.employeeList
+    const employees = employeeList
     const searchTerm = props.searchTerm
     const filterTerm = props.filterTerm
     const list = employees.filter((employee) => {
@@ -24,10 +25,18 @@ function Employees(props) {
             return employee
         }
 
-        if(employee[filterTerm].toLowerCase().includes(searchTerm.toLowerCase())){
-            return employee
-        }    
+        if(filterTerm === "FullName"){
+            const fullName = `${employee.Name} ${employee.Surname}`
+            if(fullName.toLowerCase().includes(searchTerm.toLowerCase())){
+                return employee
+            }  
+            return null
+        }
 
+        if(employee[filterTerm].toString().toLowerCase().includes(searchTerm.toString().toLowerCase())){
+            return employee
+        }  
+        
         return null
     })
     .map((employee)=>
