@@ -16,7 +16,7 @@ function Employee(props){
     )
 }
 
-function defaultSortEmployees(list){
+function groupByRole(list){
     let managers = []
     let employees = []
     let trainees = []
@@ -36,7 +36,7 @@ function defaultSortEmployees(list){
 }
 
 function Employees(props) {
-    const employees = defaultSortEmployees(employeeList)
+    const employees = employeeList
     const searchTerm = props.searchTerm
     const filterTerm = props.filterTerm
     const list = employees.filter((employee) => {
