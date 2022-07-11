@@ -1,13 +1,42 @@
 import '../styles/Hierarchy.css';
-import {employeeList,content} from '../dataArrays/userArrays'
+import {employeeList} from '../dataArrays/userArrays'
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, LayoutAnimation } from  'react-native'
 
-function Roles(props){
-    const [layoutHeight, setlayoutHeight] = useState(0)
-    const role = props.item
-    const func = props.onClickFunction
+function createTree(){
+    let positions = {};
+    let roots = [];
 
+    employeeList.forEach((employee,i) => {
+        positions[employee.EmployeeNumber] = i;
+        employee.children = [];
+    });
+
+    employeeList.forEach((employee) => {
+        if(employee.ReportingLine === -1){
+            roots.push(employee)
+            return
+        }
+        const parent = employeeList[positions[employee.ReportingLine]]
+        parent.children = [...(parent.children), employee]
+    });
+
+    let content = []
+
+    roots.forEach(employee => {
+        content.push({
+            isExpanded:false, category: `${employee.EmployeeNumber}`, items: [employee]
+        })
+    });
+
+    return content
+}
+
+function TopLevelStaff(props){
+    const [layoutHeight, setlayoutHeight] = useState(0)
+    const role = props.employee
+    const func = props.onClickFunction
+    
     useEffect(()=>{
         if(role.isExpanded){
             setlayoutHeight(null)
@@ -28,15 +57,9 @@ function Roles(props){
             </TouchableOpacity>
             <View style={{height:layoutHeight,overflow:'hidden'}}>
                 {
-                    role.items.map((employee,key) => {
-                        if(key===0){
-                            return null
-                        }
+                    role.items[0].children.map((employee,key) => {
                         return (
-                            <Text key={key} style={styles.text}>
-                                <span className='NameNumber'>{key+1} - {employee.Name} {employee.Surname}</span>
-                                <span className='Salary'>R{employee.Salary}.00</span>
-                            </Text>
+                            <NextLevelStaff key={key} employee={employee} />
                         )
                     })
                 }
@@ -45,9 +68,62 @@ function Roles(props){
     )
 }
 
-function Hierarchy() {
+function Employee(props){
+    const employee = props.employee
+    //const hasChildren = employee.children.length !== 0;
+    return (
+        <Text style={styles.itemText}>
+            <span className={`role-${employee.Role}`}>{employee.Role}</span> 
+            <span className='NameNumber'> {employee.Name} {employee.Surname}</span>
+            <span className='Salary'>R{employee.Salary}.00</span>
+        </Text>
+    )
+}
 
+function NextLevelStaff(props){
+    const [layoutHeight, setlayoutHeight] = useState(0)
+    const employee = props.employee
+    const func = props.onClickFunction
+    const level = props.level
+
+    useEffect(()=>{
+        if(employee.isExpanded){
+            setlayoutHeight(null)
+        }
+        else{
+            setlayoutHeight(0)
+        }
+    },[employee.isExpanded=true])
+
+    const branches = () =>{
+        if(employee.children.length !== 0){
+            return employee.children.map((emp,key) => 
+                <NextLevelStaff key={key} employee={emp} level={level+1}/>
+            )
+        }
+
+        return null
+    }
+
+    return (
+        <>
+            <TouchableOpacity style={styles.role} onPress={func}>
+                <Employee employee ={employee} level={level}/>
+            </TouchableOpacity>
+            <View style={{height:layoutHeight,overflow:'hidden'}}>
+                {
+                    branches()
+                }
+            </View>
+        </>
+
+    )
+}
+
+function Hierarchy() {
+    const content = createTree()
     const[listData,setListData] = useState(content)
+
     const updateLayout = (index) =>{
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         const array = [...listData]
@@ -67,8 +143,8 @@ function Hierarchy() {
                             List of Top Earners per Role (click to expand)
                         </Text>
                         {
-                            listData.map((item,key)=>
-                                <Roles key={item.category} item={item} onClickFunction={()=>{ updateLayout(key)}}/>
+                            listData.map((employee,key)=>
+                                <TopLevelStaff key={key} employee={employee} onClickFunction={()=>{ updateLayout(key)}}/>
                             )
                         }
                     </View>
@@ -80,7 +156,8 @@ function Hierarchy() {
 
 const styles = StyleSheet.create({
     container:{
-        flex:1
+        flex:1,
+        padding:10
     },
     titleText:{
         flex:1,
@@ -93,7 +170,7 @@ const styles = StyleSheet.create({
         fontSize:18
     },
     role:{
-        backgroundColor: '#282c34',
+        // backgroundColor: '#282c34',
         justifyContent:'center',
         alignItems:'center',
         borderRadius:20,
@@ -102,7 +179,6 @@ const styles = StyleSheet.create({
         height: 34,
     },
     itemText:{
-        color:'white',
         fontSize:16,
         fontWeight:'500'
     },
