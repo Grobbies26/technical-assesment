@@ -1,5 +1,6 @@
 import '../styles/Employee.css';
 import {employeeList} from '../dataArrays/userArrays'
+import React from 'react';
 
 function Employee(props){
     const employee = props.employee
@@ -14,6 +15,55 @@ function Employee(props){
             </div>
         </li>
     )
+}
+
+function RoleGroup(props){
+    const list = props.employees.map((employee)=>
+        <Employee key={employee.EmployeeNumber} employee={employee}/>
+    )
+
+    return (
+        <div className="collapsible">
+            <ul className=''>{list}</ul>
+        </div>
+    )
+}
+
+function EmployeeRoles(props){
+    const managers = props.employees.managers
+    const employees = props.employees.employees
+    const trainees = props.employees.trainees
+    
+    return(
+        <ul className='allEmployees'>
+            <li key={0} className="managers">
+                <RoleGroup employees={managers} />
+            </li>
+            <br/><br/>
+            <li key={1} className="employees">
+                <RoleGroup employees={employees} />
+            </li>
+            <br/><br/><br/><br/>
+            <li key={2} className="trainees">
+                <RoleGroup employees={trainees} />
+            </li>
+        </ul>
+    )
+}
+
+function sort(employees){
+    for(let i = 0; i < employees.length-1; i++){
+        let highest = employees[i]
+        for(let j = i+1; j < employees.length; j++ ){
+            if(highest.Salary < employees[j].Salary){
+                let temp = employees[j]
+                employees[j] = employees[i]
+                employees[i] = temp 
+            }
+        }
+    }
+
+    return employees
 }
 
 function groupByRole(list){
@@ -31,50 +81,26 @@ function groupByRole(list){
             trainees.push(employee)
         }
     });
+    
+    managers = sort(managers)
+    employees = sort(employees)
+    trainees = sort(trainees)
 
-    return managers.concat(employees, trainees)
+    return {
+        managers,
+        employees,
+        trainees
+    }
 }
 
-function Employees(props) {
-    const employees = employeeList
-    const searchTerm = props.searchTerm
-    const filterTerm = props.filterTerm
-    const list = employees.filter((employee) => {
-        if(searchTerm === ''){
-            return employee
-        }
-
-        if(filterTerm === "BirthDate"){
-            const date = employee.BirthDate.split('-').reverse().join('-')
-            
-            if(date > searchTerm){
-                return employee
-            }
-        }
-
-        if(filterTerm === "FullName"){
-            const fullName = `${employee.Name} ${employee.Surname}`
-            if(fullName.toLowerCase().includes(searchTerm.toLowerCase())){
-                return employee
-            }  
-            return null
-        }
-
-        if(employee[filterTerm].toString().toLowerCase().includes(searchTerm.toString().toLowerCase())){
-            return employee
-        }  
-        
-        return null
-    })
-    .map((employee)=>
-        <Employee key={employee.EmployeeNumber} employee={employee}/>
-    )
-
+function SummaryEmployee() {
+    const employees = groupByRole(employeeList)
+    
     return (
         <div className="Employees">
-            <ul>{list}</ul>
+            <EmployeeRoles  employees={employees}/>
         </div>
     );
 }
 
-export default Employees;
+export default SummaryEmployee;

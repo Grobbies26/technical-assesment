@@ -15,6 +15,11 @@
 }
 
 .NavBar{
-    justify-content: right;
-    align-items: right;
+    justify-content: center;
+    align-items: center;
+}
+
+.PageTitle{
+    float: left;
+    
 }

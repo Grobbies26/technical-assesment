@@ -3,6 +3,7 @@ import Employees from './components/Employee';
 import { useState } from 'react';
 import NavBar from './components/NavBar';
 import { filterItems } from './dataArrays/userArrays'
+import SummaryEmployee from './components/SummaryEmployee';
 
 function App() {
   const [searchTerm,setSearchTerm] = useState('')
@@ -15,6 +16,7 @@ function App() {
       <option key={index} value={item.value}>{item.title}</option>
     )
   })
+
   return (
     <div className="App">
       <header className="App-header">
@@ -37,6 +39,7 @@ function App() {
         <input id='DateBar' type='date' onChange={event => {setSearchTerm(event.target.value)}} disabled={dateDisabled} hidden={dateDisabled}></input>
       </div>
       <Employees searchTerm={searchTerm} filterTerm={filterTerm}/>
+      <SummaryEmployee />
     </div>
   );
 }

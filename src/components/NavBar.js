@@ -1,25 +1,26 @@
 import '../styles/NavBar.css'
-import {menuItems} from '../dataArrays/userArrays'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-function Item(props){
-    const item = props.item
-
-    return(
-        <li className='menuItems'>
-            <a href='/#'>{item.title}</a>
-        </li>
-    )
-}
+import HomePage from '../Pages/HomePage'
+import HierarchyPage from '../Pages/HierarchyPage'
+import SummaryPage from '../Pages/SummaryPage'
 
 function NavBar() {
-    const list = menuItems.map((item,index)=>
-        <Item key={index} item={item}/>
-    )
-
     return (
-        <nav className="NavBar">
-            <ul> {list} </ul>
-        </nav>
+        <div>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<HomePage/>} />
+                    <Route path="/hierarchy" element={<HierarchyPage/>} />
+                    <Route path="/summary" element={<SummaryPage/>} />
+                </Routes>
+            </BrowserRouter>
+            <ul className='menuItems'>
+                <li><a href='http://loclahost:3000/'>Home</a></li>
+                <li><a href='http://loclahost:3000/hierarchy'>Hierarchy</a></li>
+                <li><a href='http://loclahost:3000/summary'>Summary</a></li>
+            </ul>
+        </div>
     );
 }
 
