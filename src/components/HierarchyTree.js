@@ -6,27 +6,27 @@ import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, LayoutAnimation
 function createTree(){
     let positions = {};
     let roots = [];
-
+    let newObjs = []
     employeeList.forEach((employee,i) => {
         positions[employee.EmployeeNumber] = i;
+        newObjs.push({
+            isExpanded:false, category: `${employee.EmployeeNumber}`, item: employee
+        })
         employee.children = [];
     });
-
-    employeeList.forEach((employee) => {
-        if(employee.ReportingLine === -1){
+    newObjs.forEach((employee) => {
+        if(employee.item.ReportingLine === -1){
             roots.push(employee)
             return
         }
-        const parent = employeeList[positions[employee.ReportingLine]]
-        parent.children = [...(parent.children), employee]
+        const parent = newObjs[positions[employee.item.ReportingLine]]
+        parent.item.children = [...(parent.item.children), employee]
     });
 
     let content = []
 
     roots.forEach(employee => {
-        content.push({
-            isExpanded:false, category: `${employee.EmployeeNumber}`, items: [employee]
-        })
+        content.push(employee)
     });
 
     return content
@@ -34,32 +34,28 @@ function createTree(){
 
 function TopLevelStaff(props){
     const [layoutHeight, setlayoutHeight] = useState(0)
-    const role = props.employee
+    const employee = props.employee
     const func = props.onClickFunction
     
     useEffect(()=>{
-        if(role.isExpanded){
+        if(employee.isExpanded){
             setlayoutHeight(null)
         }
         else{
             setlayoutHeight(0)
         }
-    },[role.isExpanded])
+    },[employee.isExpanded])
 
     return(
         <View>
             <TouchableOpacity style={styles.role} onPress={func}>
-                <Text style={styles.itemText}>
-                    <span className={`role-${role.items[0].Role}`}>{role.items[0].Role}</span> 
-                    <span className='NameNumber'> {role.items[0].Name} {role.items[0].Surname}</span>
-                    <span className='Salary'>R{role.items[0].Salary}.00</span>
-                </Text>
+                <Employee employee={employee.item} level={0} />
             </TouchableOpacity>
             <View style={{height:layoutHeight,overflow:'hidden'}}>
                 {
-                    role.items[0].children.map((employee,key) => {
+                    employee.item.children.map((empl,key) => {
                         return (
-                            <NextLevelStaff key={key} employee={employee} />
+                            <NextLevelStaff key={key} employee={empl} level={1}/>
                         )
                     })
                 }
@@ -70,9 +66,9 @@ function TopLevelStaff(props){
 
 function Employee(props){
     const employee = props.employee
-    //const hasChildren = employee.children.length !== 0;
+    const level = props.level
     return (
-        <Text style={styles.itemText}>
+        <Text style={{fontSize:16,fontWeight:'500',paddingLeft: `${level * 32}px`}}>
             <span className={`role-${employee.Role}`}>{employee.Role}</span> 
             <span className='NameNumber'> {employee.Name} {employee.Surname}</span>
             <span className='Salary'>R{employee.Salary}.00</span>
@@ -93,11 +89,11 @@ function NextLevelStaff(props){
         else{
             setlayoutHeight(0)
         }
-    },[employee.isExpanded=true])
-
+    },[employee.isExpanded])
+    
     const branches = () =>{
-        if(employee.children.length !== 0){
-            return employee.children.map((emp,key) => 
+        if(employee.item.children.length !== 0){
+            return employee.item.children.map((emp,key) => 
                 <NextLevelStaff key={key} employee={emp} level={level+1}/>
             )
         }
@@ -108,7 +104,7 @@ function NextLevelStaff(props){
     return (
         <>
             <TouchableOpacity style={styles.role} onPress={func}>
-                <Employee employee ={employee} level={level}/>
+                <Employee employee ={employee.item} level={level}/>
             </TouchableOpacity>
             <View style={{height:layoutHeight,overflow:'hidden'}}>
                 {
@@ -123,7 +119,6 @@ function NextLevelStaff(props){
 function Hierarchy() {
     const content = createTree()
     const[listData,setListData] = useState(content)
-
     const updateLayout = (index) =>{
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         const array = [...listData]
@@ -140,7 +135,7 @@ function Hierarchy() {
                 <View style={styles.container}>
                     <View>
                         <Text style = {styles.titleText}>
-                            List of Top Earners per Role (click to expand)
+                            Company Hierarchy
                         </Text>
                         {
                             listData.map((employee,key)=>
