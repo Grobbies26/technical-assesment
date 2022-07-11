@@ -14,6 +14,12 @@ const filterItems = [
   { title:'Salary', value:'Salary', },
 ]
 
+const content = [
+  { isExpanded:false, category: 'Manager', items:[] },
+  { isExpanded:false, category: 'Employee', items:[] },
+  { isExpanded:false, category: 'Trainee', items:[] }
+]
+
 const employeeList = [
   {"Name":"John", "Surname":"Smith", "BirthDate": "18-11-1980", "EmployeeNumber": 1, "Salary": 700000, "Role": "Manager", "ReportingLine": -1,},
   {"Name":"Jane", "Surname":"Doe", "BirthDate": "31-01-1995", "EmployeeNumber": 2, "Salary": 150000, "Role": "Employee", "ReportingLine": 1,},
@@ -25,4 +31,4 @@ const employeeList = [
   {"Name":"Gilad", "Surname":"Mannington", "BirthDate": "20-11-1997", "EmployeeNumber": 69, "Salary": 110000, "Role": "Trainee", "ReportingLine": 7,},
 ]
 
-export {menuItems, filterItems, employeeList}
+export {menuItems, filterItems, employeeList, content}

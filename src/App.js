@@ -4,6 +4,7 @@ import { useState } from 'react';
 import NavBar from './components/NavBar';
 import { filterItems } from './dataArrays/userArrays'
 import SummaryEmployee from './components/SummaryEmployee';
+import Hierarchy from './components/HierarchyTree';
 
 function App() {
   const [searchTerm,setSearchTerm] = useState('')
@@ -39,6 +40,7 @@ function App() {
         <input id='DateBar' type='date' onChange={event => {setSearchTerm(event.target.value)}} disabled={dateDisabled} hidden={dateDisabled}></input>
       </div>
       <Employees searchTerm={searchTerm} filterTerm={filterTerm}/>
+      <Hierarchy />
       <SummaryEmployee />
     </div>
   );
