@@ -34,3 +34,13 @@ li{
     padding:5px;
     margin:3px;
 }
+
+.SearchBar{
+    padding:3px;
+    align-items: center;
+}
+  
+.SearchBar input,select{
+    padding:3px;
+    margin:3px;
+}

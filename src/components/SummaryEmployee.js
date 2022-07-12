@@ -1,4 +1,4 @@
-import {employeeList, content} from '../dataArrays/userArrays'
+import {employeeList, summaryContent} from '../dataArrays/userArrays'
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, LayoutAnimation } from  'react-native'
 
@@ -33,9 +33,9 @@ function groupByRole(list){
         }
     });
 
-    content[0].items = sort(managers)
-    content[1].items = sort(employees)
-    content[2].items = sort(trainees)
+    summaryContent[0].items = sort(managers)
+    summaryContent[1].items = sort(employees)
+    summaryContent[2].items = sort(trainees)
 }
 
 function Roles(props){
@@ -82,7 +82,7 @@ function Roles(props){
 
 function SummaryEmployee() {
     groupByRole(employeeList)
-    const[listData,setListData] = useState(content)
+    const[listData,setListData] = useState(summaryContent)
     const updateLayout = (index) =>{
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         const array = [...listData]

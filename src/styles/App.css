@@ -11,13 +11,3 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
-.SearchBar{
-  padding:3px;
-  align-items: center;
-}
-
-.SearchBar input,select{
-  padding:3px;
-  margin:3px;
-}

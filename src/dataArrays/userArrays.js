@@ -14,7 +14,7 @@ const filterItems = [
   { title:'Salary', value:'Salary', },
 ]
 
-const content = [
+const summaryContent = [
   { isExpanded:false, category: 'Manager', items:[] },
   { isExpanded:false, category: 'Employee', items:[] },
   { isExpanded:false, category: 'Trainee', items:[] }
@@ -31,4 +31,4 @@ const employeeList = [
   {"Name":"Gilad", "Surname":"Mannington", "BirthDate": "20-11-1997", "EmployeeNumber": 69, "Salary": 110000, "Role": "Trainee", "ReportingLine": 7, "children": [],},
 ]
 
-export {menuItems, filterItems, employeeList, content}
+export {menuItems, filterItems, employeeList, summaryContent}
