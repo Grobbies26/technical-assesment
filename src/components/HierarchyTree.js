@@ -55,7 +55,29 @@ function TopLevelStaff(props){
                 {
                     employee.item.children.map((empl,key) => {
                         return (
-                            <NextLevelStaff key={key} employee={empl} level={1}/>
+                            <View key={key}>
+                                <Employee employee ={empl.item} level={1}/>
+                                <View style={{height:layoutHeight,overflow:'hidden',margin:7}}>{ 
+                                    empl.item.children.map((emp,keyb) => {
+                                        let parent = <Employee key={keyb} employee ={emp.item} level={2}/>
+                                        if(emp.item.children.length !== 0){
+                                            return (
+                                            <>
+                                                {parent}
+                                                <View style={{height:layoutHeight,overflow:'hidden',margin:7}}>
+                                                    {   
+                                                        emp.item.children.map((empb,keyc) => {
+                                                            return <Employee key={keyc} employee ={empb.item} level={3}/>
+                                                        })
+                                                    }
+                                                </View>
+                                            </>
+                                        )}
+                                        return parent
+                                    }   
+                                )}
+                                </View>
+                            </View>
                         )
                     })
                 }
@@ -68,7 +90,7 @@ function Employee(props){
     const employee = props.employee
     const level = props.level
     return (
-        <Text style={{fontSize:16,fontWeight:'500',paddingLeft: `${level * 32}px`}}>
+        <Text style={{fontSize:16,fontWeight:'500',paddingLeft: `${level * 50}px`}}>
             <span className={`role-${employee.Role}`}>{employee.Role}</span> 
             <span className='NameNumber'> {employee.Name} {employee.Surname}</span>
             <span className='Salary'>R{employee.Salary}.00</span>
@@ -91,28 +113,25 @@ function NextLevelStaff(props){
         }
     },[employee.isExpanded])
     
-    const branches = () =>{
-        if(employee.item.children.length !== 0){
-            return employee.item.children.map((emp,key) => 
-                <NextLevelStaff key={key} employee={emp} level={level+1}/>
-            )
-        }
-
-        return null
+    if(employee.item.children.length === 0){
+        return (
+            <Employee employee ={employee.item} level={level}/>
+        )
     }
-
+    
     return (
         <>
             <TouchableOpacity style={styles.role} onPress={func}>
                 <Employee employee ={employee.item} level={level}/>
             </TouchableOpacity>
             <View style={{height:layoutHeight,overflow:'hidden'}}>
-                {
-                    branches()
-                }
+                { 
+                    employee.item.children.map((emp,key) => {
+                        return <Employee key={key} employee ={emp.item} level={level}/>
+                    }   
+                )}
             </View>
         </>
-
     )
 }
 
