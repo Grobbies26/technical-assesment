@@ -80,7 +80,14 @@ function Roles(props){
     )
 }
 
-function SummaryEmployee() {
+function SummaryEmployee(props) {
+    if(props.employees !== ''){
+        groupByRole(props.employees)
+    }
+    else{
+        groupByRole(employeeList)
+    }
+
     groupByRole(employeeList)
     const[listData,setListData] = useState(summaryContent)
     const updateLayout = (index) =>{

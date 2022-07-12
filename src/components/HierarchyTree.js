@@ -3,11 +3,11 @@ import {employeeList} from '../dataArrays/userArrays'
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, LayoutAnimation } from  'react-native'
 
-function createTree(){
+function createTree(list){
     let positions = {};
     let roots = [];
     let newObjs = []
-    employeeList.forEach((employee,i) => {
+    list.forEach((employee,i) => {
         positions[employee.EmployeeNumber] = i;
         newObjs.push({
             isExpanded:false, category: `${employee.EmployeeNumber}`, item: employee
@@ -135,8 +135,15 @@ function NextLevelStaff(props){
     )
 }
 
-function Hierarchy() {
-    const content = createTree()
+function Hierarchy(props) {
+    let content
+    if(props.employees !== ''){
+        content = createTree(props.employees)
+    }
+    else{
+        content = createTree(employeeList)
+    }
+
     const[listData,setListData] = useState(content)
     const updateLayout = (index) =>{
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);

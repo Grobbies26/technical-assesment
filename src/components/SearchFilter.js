@@ -74,8 +74,14 @@ function Employees(props) {
     )
 }
 
-function SearchFilter() {
-    const employees = defaultSortEmployees(employeeList)
+function SearchFilter(props) {
+    let employees
+    if(props.employees !== ''){
+        employees = defaultSortEmployees(props.employees)
+    }
+    else{
+        employees = defaultSortEmployees(employeeList)
+    }
 
     const [searchTerm,setSearchTerm] = useState('')
     const [filterTerm,setFilterTerm] = useState('Name')
