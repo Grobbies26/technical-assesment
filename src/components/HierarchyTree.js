@@ -12,7 +12,7 @@ function createTree(list){
     list.forEach((employee,i) => {
         positions[employee.EmployeeNumber] = i;
         newObjs.push({
-            isExpanded:false, category: `${employee.EmployeeNumber}`, item: employee
+            isExpanded:false, category: `${employee.EmployeeNumber}`, item: employee, children:[]
         })
         employee.children = [];
     });
@@ -22,7 +22,7 @@ function createTree(list){
             return
         }
         const parent = newObjs[positions[employee.item.ReportingLine]]
-        parent.item.children = [...(parent.item.children), employee]
+        parent.children = [...(parent.children), employee]
     });
 
     let content = []
@@ -38,7 +38,7 @@ function TopLevelStaff(props){
     const [layoutHeight, setlayoutHeight] = useState(0)
     const employee = props.employee
     const func = props.onClickFunction
-    
+
     useEffect(()=>{
         if(employee.isExpanded){
             setlayoutHeight(null)
@@ -51,39 +51,49 @@ function TopLevelStaff(props){
     return(
         <View>
             <TouchableOpacity style={styles.role} onPress={func}>
-                <Text>
+                <Text style={styles.itemText}>
                     <AiOutlineDown/>
                     <Employee employee={employee.item} level={0} />
                 </Text>
             </TouchableOpacity>
             <View style={{height:layoutHeight,overflow:'hidden'}}>
-                
                 {
-                    employee.item.children.map((empl,key) => {
+                    employee.children.map((empl,key) => {
+                        return <NextLevelStaff key={key} employee={empl} level={1}/>
+                    })
+                }
+            </View>
+        </View>
+    )
+}
+
+function NextLevelStaff(props){
+    const employee = props.employee
+    const level = props.level
+    
+    return (
+        <View style={{padding:2}}>
+            <Staff employee={employee} level={level} />
+            <View style={{height:null,overflow:'hidden'}}>
+                {
+                    employee.children.map((emp,key) => {
                         return (
-                            <View key={key}>
-                                <Employee employee ={empl.item} level={1}/>
-                                <View style={{height:layoutHeight,overflow:'hidden',margin:7}}>{ 
-                                    empl.item.children.map((emp,keyb) => {
-                                        let parent = <Employee key={keyb} employee ={emp.item} level={2}/>
-                                        if(emp.item.children.length !== 0){
-                                            return (
-                                            <>
-                                                {parent}
-                                                <View style={{height:layoutHeight,overflow:'hidden',margin:7}}>
-                                                    {   
-                                                        emp.item.children.map((empb,keyc) => {
-                                                            return <Employee key={keyc} employee ={empb.item} level={3}/>
-                                                        })
-                                                    }
-                                                </View>
-                                            </>
-                                        )}
-                                        return parent
-                                    }   
-                                )}
+                            <View key={key} style={{padding:2}}>
+                                <Staff employee={emp} level={level+1} />
+                                <View style={{height:null,overflow:'hidden'}}>
+                                    {
+                                        emp.children.map((empl,keya) => {
+                                            if(empl.children.length === 0){
+                                                return (
+                                                    <View key={keya} style={{padding:2}}>
+                                                        <Staff employee={empl} level={level+2}/>
+                                                    </View>
+                                            )}
+                                        })
+                                    }
                                 </View>
                             </View>
+                            // <NextLevelStaff key={keya} employee={employee} level={level+1}/>
                         )
                     })
                 }
@@ -92,52 +102,34 @@ function TopLevelStaff(props){
     )
 }
 
-function Employee(props){
+function Staff(props){
     const employee = props.employee
     const level = props.level
-    return (
-        <Text style={{fontSize:16,fontWeight:'500',paddingLeft: `${level * 50}px`}}>
-            <span className={`role-${employee.Role}`}>{employee.Role}</span> 
-            <span className='NameNumber'> {employee.Name} {employee.Surname}</span>
-            <span className='Salary'>R{employee.Salary}.00</span>
-        </Text>
-    )
-}
-
-function NextLevelStaff(props){
-    const [layoutHeight, setlayoutHeight] = useState(0)
-    const employee = props.employee
-    const func = props.onClickFunction
-    const level = props.level
-
-    useEffect(()=>{
-        if(employee.isExpanded){
-            setlayoutHeight(null)
-        }
-        else{
-            setlayoutHeight(0)
-        }
-    },[employee.isExpanded])
-    
-    if(employee.item.children.length === 0){
+    if(employee.children.length !== 0){
         return (
-            <Employee employee ={employee.item} level={level}/>
+            <Text style={styles.subItemText}>
+                <AiOutlineDown style={{fontSize:16,fontWeight:'500',paddingLeft: `${level * 20}px`}}/>
+                <Employee employee={employee.item}/>
+            </Text>
         )
     }
     
     return (
-        <>
-            <TouchableOpacity style={styles.role} onPress={func}>
-                <Employee employee ={employee.item} level={level}/>
-            </TouchableOpacity>
-            <View style={{height:layoutHeight,overflow:'hidden'}}>
-                { 
-                    employee.item.children.map((emp,key) => {
-                        return <Employee key={key} employee ={emp.item} level={level}/>
-                    }   
-                )}
-            </View>
-        </>
+        <Text style={styles.subItemText}>
+            <Text style={{fontSize:16,fontWeight:'500',paddingLeft: `${level * 24}px`}}>-</Text>
+            <Employee employee={employee.item}/>
+        </Text>
+    )
+}
+
+function Employee(props){
+    const employee = props.employee
+    const level = props.level
+    return (
+        <Text style={{fontSize:16,fontWeight:'500'}}>
+            <span className={`role-${employee.Role}`}>{employee.Role}</span> 
+            <span className='NameNumber'>{employee.EmployeeNumber} - {employee.Name} {employee.Surname}</span>
+        </Text>
     )
 }
 
@@ -151,10 +143,11 @@ function Hierarchy(props) {
     }
 
     const[listData,setListData] = useState(content)
+
     const updateLayout = (index) =>{
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         const array = [...listData]
-
+        console.log(array)
         array.map((value,place) => 
             place === index? (array[place]['isExpanded'] = !array[place]['isExpanded']):(array[place]['isExpanded'] = false)
         )
@@ -171,7 +164,16 @@ function Hierarchy(props) {
                         </Text>
                         {
                             listData.map((employee,key)=>
-                                <TopLevelStaff key={key} employee={employee} onClickFunction={()=>{ updateLayout(key)}}/>
+                                {   
+                                    return <TopLevelStaff key={key} employee={employee} onClickFunction={()=>{ 
+                                        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                                        const array = [...listData]
+                                        array.map((value,place) => 
+                                            place === key? (array[place]['isExpanded'] = !array[place]['isExpanded']):(array[place]['isExpanded'] = false)
+                                        )
+                                        setListData(array)
+                                    }}/>
+                                }
                             )
                         }
                     </View>
@@ -184,7 +186,7 @@ function Hierarchy(props) {
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        padding:10
+        padding:2
     },
     titleText:{
         flex:1,
@@ -197,18 +199,24 @@ const styles = StyleSheet.create({
         fontSize:18
     },
     role:{
-        // backgroundColor: '#282c34',
-        // justifyContent:'center',
-        // alignItems:'center',
+        backgroundColor: '#282c34',
         borderRadius:20,
         padding:3,
         margin: 2,
         height: 34,
     },
     itemText:{
-        height: 34,
+        color:'white',
+        height: 36,
         fontSize:16,
-        fontWeight:'500'
+        fontWeight:'500',
+        padding:3,
+    },
+    subItemText:{
+        height: 35,
+        fontSize:16,
+        fontWeight:'500',
+        padding:3,
     },
     content:{
         height: 34,

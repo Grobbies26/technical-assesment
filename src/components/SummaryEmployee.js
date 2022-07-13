@@ -59,10 +59,10 @@ function Roles(props){
         <View>
             <TouchableOpacity style={styles.role} onPress={func}>
                 <Text style={styles.itemText}>
+                    <AiOutlineDown/>
                     <span className={`role-${role.items[0].Role}`}>{role.items[0].Role}</span> 
                     <span className='NameNumber'> {role.items[0].Name} {role.items[0].Surname}</span>
                     <span className='Salary'>R{role.items[0].Salary}.00</span>
-                    <AiOutlineDown/>
                 </Text>
             </TouchableOpacity>
             <View style={{height:layoutHeight,overflow:'hidden'}}>

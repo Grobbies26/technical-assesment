@@ -2,7 +2,7 @@ import '../styles/NavBar.css'
 
 function NavBar() {
     return (
-        <div>
+        <div className='Nav'>
             <ul className='menuItems'>
                 <li><a href='#SearchFilter'>Search</a></li>
                 <li><a href='#Hierarchy'>Hierarchy</a></li>
