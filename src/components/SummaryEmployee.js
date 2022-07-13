@@ -1,6 +1,9 @@
+import '../styles/Employee.css'
+import '../styles/Component.css'
 import {employeeList, summaryContent} from '../dataArrays/userArrays'
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, LayoutAnimation } from  'react-native'
+import {AiOutlineDown} from 'react-icons/ai'
 
 function sort(employees){
     for(let i = 0; i < employees.length-1; i++){
@@ -59,6 +62,7 @@ function Roles(props){
                     <span className={`role-${role.items[0].Role}`}>{role.items[0].Role}</span> 
                     <span className='NameNumber'> {role.items[0].Name} {role.items[0].Surname}</span>
                     <span className='Salary'>R{role.items[0].Salary}.00</span>
+                    <AiOutlineDown/>
                 </Text>
             </TouchableOpacity>
             <View style={{height:layoutHeight,overflow:'hidden'}}>
@@ -101,12 +105,12 @@ function SummaryEmployee(props) {
     }
 
     return (
-        <div className="Employees">
+        <div id="Summary" className="Summary">
             <SafeAreaView style={{flex:1}}>
                 <View style={styles.container}>
                     <View>
                         <Text style = {styles.titleText}>
-                            List of Top Earners per Role (click to expand)
+                            Summary of Top Earners per Role 
                         </Text>
                         {
                             listData.map((item,key)=>
@@ -122,12 +126,13 @@ function SummaryEmployee(props) {
 
 const styles = StyleSheet.create({
     container:{
-        flex:1
+        flex:1,
     },
     titleText:{
         flex:1,
         fontSize:22,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingLeft: 10
     },
     headerButton:{
         textAlign: 'center',
@@ -142,26 +147,26 @@ const styles = StyleSheet.create({
         padding:3,
         margin: 2,
         height: 34,
+        width:"350px"
     },
     itemText:{
         color:'white',
         fontSize:16,
-        fontWeight:'500'
+        fontWeight:'500',
+        
     },
     content:{
         paddingLeft:10,
         paddingRight:10,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        alignItems:'center',
+        justifyContent:'center'
     },
     text:{
         fontSize: 16,
         padding: 10,
+        
     },
-    seperator:{
-        height:0.5,
-        backgroundColor:'black',
-        width:'100'
-    }
 })
 
 export default SummaryEmployee;

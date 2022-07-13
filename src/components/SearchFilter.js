@@ -1,6 +1,7 @@
-import '../styles/SearchFilter.css';
-import '../styles/App.css';
-import { useState } from 'react';
+import '../styles/Component.css'
+import '../styles/Employee.css'
+import '../styles/App.css'
+import { useState } from 'react'
 import {employeeList, filterItems} from '../dataArrays/userArrays'
 
 function Employee(props){
@@ -97,7 +98,8 @@ function SearchFilter(props) {
     const list = <Employees employees={employees} searchTerm={searchTerm} filterTerm={filterTerm}/>
 
     return (
-        <div className="Employees">
+        <div id="SearchFilter" className="SearchFilter">
+            <div className='titleText'>Search/Filter</div>
             <div className="SearchBar">
                 <select defaultValue={'FullName'} onChange={event => {
                 setFilterTerm(event.target.value); 

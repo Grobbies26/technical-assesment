@@ -1,7 +1,9 @@
-import '../styles/Hierarchy.css';
+import '../styles/Component.css'
+import '../styles/Employee.css'
 import {employeeList} from '../dataArrays/userArrays'
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, LayoutAnimation } from  'react-native'
+import {AiOutlineDown} from 'react-icons/ai'
 
 function createTree(list){
     let positions = {};
@@ -49,9 +51,13 @@ function TopLevelStaff(props){
     return(
         <View>
             <TouchableOpacity style={styles.role} onPress={func}>
-                <Employee employee={employee.item} level={0} />
+                <Text>
+                    <AiOutlineDown/>
+                    <Employee employee={employee.item} level={0} />
+                </Text>
             </TouchableOpacity>
             <View style={{height:layoutHeight,overflow:'hidden'}}>
+                
                 {
                     employee.item.children.map((empl,key) => {
                         return (
@@ -156,7 +162,7 @@ function Hierarchy(props) {
     }
 
     return (
-        <div className="Employees">
+        <div id="Hierarchy" className="Hierarchy">
             <SafeAreaView style={{flex:1}}>
                 <View style={styles.container}>
                     <View>
@@ -183,7 +189,7 @@ const styles = StyleSheet.create({
     titleText:{
         flex:1,
         fontSize:22,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     headerButton:{
         textAlign: 'center',
@@ -192,30 +198,28 @@ const styles = StyleSheet.create({
     },
     role:{
         // backgroundColor: '#282c34',
-        justifyContent:'center',
-        alignItems:'center',
+        // justifyContent:'center',
+        // alignItems:'center',
         borderRadius:20,
         padding:3,
         margin: 2,
         height: 34,
     },
     itemText:{
+        height: 34,
         fontSize:16,
         fontWeight:'500'
     },
     content:{
+        height: 34,
         paddingLeft:10,
         paddingRight:10,
         backgroundColor: 'white'
     },
     text:{
+        height: 34,
         fontSize: 16,
         padding: 10,
-    },
-    seperator:{
-        height:0.5,
-        backgroundColor:'black',
-        width:'100'
     }
 })
 
