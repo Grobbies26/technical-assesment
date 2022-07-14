@@ -14,7 +14,7 @@ function createWindow( ) {
     window.loadURL('http://localhost:3000')
 }
 
-app.whenReady().then(createWindow)
+app.on("ready", createWindow)
 
 app.on('window-all-closed', function(){
     if(process.platform !== 'darwin'){
