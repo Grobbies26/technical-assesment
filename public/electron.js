@@ -12,7 +12,6 @@ function createWindow( ) {
     })
 
     window.loadURL('http://localhost:3000')
-    window.loadURL(`file://$_dirname/dist/index.html`)
 }
 
 app.on("ready", createWindow)
