@@ -36,10 +36,6 @@
     "eject": "react-scripts eject",
     "dev": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm run electron\"",
     "electron": "wait-on tcp:3000 && electron .",
-    "package": "electron-forge package",
-    "make-mac": "react-scripts build && electron-forge make --platform darwin",
-    "make-linux": "react-scripts build && electron-forge make --platform linux",
-    "make": "electron-forge make",
     "pack": "react-scripts build && electron-builder --dir",
     "dist": "react-scripts build && electron-builder -w"
   },
@@ -62,11 +58,6 @@
     ]
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.64",
-    "@electron-forge/maker-deb": "^6.0.0-beta.64",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.64",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.64",
-    "@electron-forge/maker-zip": "^6.0.0-beta.64",
     "electron": "^19.0.8",
     "electron-builder": "^23.1.0"
   },
@@ -74,33 +65,6 @@
     "appId": "your.id",
     "win": {
       "target": "portable"
-    }
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "technical_assesment"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ]
     }
   }
 }
