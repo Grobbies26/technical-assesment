@@ -89,6 +89,7 @@ function NextLevelStaff(props){
                                                         <Staff employee={empl} level={level+2}/>
                                                     </View>
                                             )}
+                                            return null
                                         })
                                     }
                                 </View>
@@ -124,7 +125,6 @@ function Staff(props){
 
 function Employee(props){
     const employee = props.employee
-    const level = props.level
     return (
         <Text style={{fontSize:16,fontWeight:'500'}}>
             <span className={`role-${employee.Role}`}>{employee.Role}</span> 
@@ -143,16 +143,6 @@ function Hierarchy(props) {
     }
 
     const[listData,setListData] = useState(content)
-
-    const updateLayout = (index) =>{
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        const array = [...listData]
-        console.log(array)
-        array.map((value,place) => 
-            place === index? (array[place]['isExpanded'] = !array[place]['isExpanded']):(array[place]['isExpanded'] = false)
-        )
-        setListData(array)
-    }
 
     return (
         <div id="Hierarchy" className="Hierarchy">
