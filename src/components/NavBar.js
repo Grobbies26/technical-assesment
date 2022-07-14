@@ -1,25 +1,14 @@
 import '../styles/NavBar.css'
-import {menuItems} from '../dataArrays/userArrays'
-
-function Item(props){
-    const item = props.item
-
-    return(
-        <li className='menuItems'>
-            <a href='/#'>{item.title}</a>
-        </li>
-    )
-}
 
 function NavBar() {
-    const list = menuItems.map((item,index)=>
-        <Item key={index} item={item}/>
-    )
-
     return (
-        <nav className="NavBar">
-            <ul> {list} </ul>
-        </nav>
+        <div className='Nav'>
+            <ul className='menuItems'>
+                <li><a href='#SearchFilter'>Search</a></li>
+                <li><a href='#Hierarchy'>Hierarchy</a></li>
+                <li><a href='#Summary'>Summary</a></li>
+            </ul>
+        </div>
     );
 }
 

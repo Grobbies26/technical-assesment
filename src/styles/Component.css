@@ -1,0 +1,38 @@
+span{
+    text-align: justify;
+    border-radius: 10px;
+    padding: 4px;
+    margin: 2px;
+    /* background-color: chartreuse; */
+}
+
+.SearchFilter{
+    float: left;
+}
+
+.Hierarchy {
+    float: left;
+}
+
+.Summary{
+    float: left;
+} 
+
+.SearchBar{
+    padding:2px;
+    padding-left: 42px;
+    /* align-items: center; */
+}
+  
+.SearchBar input,select{
+    padding:3px;
+    padding-top: 1px;
+    margin:3px;
+}
+
+.titleText{
+    font-size:22px;
+    font-weight: bold;
+    padding:4;
+    padding-left: 10px
+}

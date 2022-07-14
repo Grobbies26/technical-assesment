@@ -1,23 +1,13 @@
-.App {
-  text-align: center;
-}
-
 .App-header {
   background-color: #282c34;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-left: 5px;
+  width: 100vw;
 }
 
-.SearchBar{
-  padding:3px;
-  align-items: center;
-}
-
-.SearchBar input,select{
-  padding:3px;
-  margin:3px;
+.App {
+  padding-left: 10;
 }
