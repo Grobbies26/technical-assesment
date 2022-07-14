@@ -12,9 +12,10 @@ function createWindow( ) {
     })
 
     window.loadURL('http://localhost:3000')
+    window.loadURL(`file://$_dirname/dist/index.html`)
 }
 
-app.whenReady().then(createWindow)
+app.on("ready", createWindow)
 
 app.on('window-all-closed', function(){
     if(process.platform !== 'darwin'){
