@@ -38,7 +38,7 @@
     "package": "electron-forge package",
     "make-mac": "react-scripts build && electron-forge make --platform darwin",
     "make-linux": "react-scripts build && electron-forge make --platform linux",
-    "make": "electron-forge make"
+    "make": "react-scripts build && electron-forge make"
   },
   "eslintConfig": {
     "extends": [
